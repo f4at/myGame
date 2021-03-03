@@ -1,0 +1,27 @@
+game.html: main.o game.o menu.o video.o audio.o settings.o utils.o buttons.o graphics.o events.o files.o fonts.o
+	emcc ./*.o  -o game.html -s LEGACY_GL_EMULATION=1 -s WASM=1 -s GL_UNSAFE_OPTS=0 -g -g4 -s ASSERTIONS=2 -s SAFE_HEAP=1 -s STACK_OVERFLOW_CHECK=1 --source-map-base http://127.0.0.0:80/ --use-preload-plugins --preload-file data --preload-file assets
+	rm ./*.o
+main.o:main.c
+	emcc main.c -c -g -s GL_UNSAFE_OPTS=0
+game.o:game.c
+	emcc game.c -c -g -s GL_UNSAFE_OPTS=0
+menu.o:menu.c
+	emcc menu.c -c -g -s GL_UNSAFE_OPTS=0
+video.o:video.c
+	emcc video.c -c -g -s GL_UNSAFE_OPTS=0
+audio.o:audio.c
+	emcc audio.c -c -g -s GL_UNSAFE_OPTS=0
+buttons.o:buttons.c
+	emcc buttons.c -c -g -s GL_UNSAFE_OPTS=0
+graphics.o:graphics.c
+	emcc graphics.c -c -g -s GL_UNSAFE_OPTS=0
+fonts.o:fonts.c
+	emcc fonts.c -c -g -s GL_UNSAFE_OPTS=0 
+events.o:events.c
+	emcc events.c -c -g -s GL_UNSAFE_OPTS=0
+settings.o:settings.c
+	emcc settings.c -c -g -s GL_UNSAFE_OPTS=0
+files.o:files.c
+	emcc files.c -c -g -s GL_UNSAFE_OPTS=0
+utils.o:utils.c
+	emcc utils.c -c -g -s GL_UNSAFE_OPTS=0
