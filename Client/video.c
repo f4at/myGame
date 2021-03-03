@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "SDL/SDL.h"
+#include "SDL/SDL_image.h"
 #include "video.h"
 #include "settings.h"
 #include "events.h"
@@ -27,9 +28,13 @@ void Video_Init() {
     fastUint8 bpp = info->vfmt->BitsPerPixel;
 
     char *title = getSetting("title");
-    char *icon = getSetting("iconText");
-    SDL_WM_SetCaption(title, icon);
-    free(title);free(icon);
+    char *iconText = getSetting("iconText");
+    SDL_WM_SetCaption(title, iconText);
+
+    SDL_Surface * icon = IMG_Load("assets/imgs/icon.png");
+    SDL_WM_SetIcon(icon,NULL);
+
+    free(title);free(iconText);free(icon);
 
     Video_Flags = SDL_OPENGL;// | SDL_RESIZABLE
 
@@ -111,4 +116,5 @@ void Video_Fullscreen(fastUint8 o) {
 }
 
 void Video_Quit() {
+
 }

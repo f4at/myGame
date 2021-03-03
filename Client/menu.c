@@ -32,33 +32,38 @@ const SDL_Color optionsTextColor = (SDL_Color){r:0,g:0,b:0};
 fastUint8 selected = 0;
 Event keyboard_event;
 void menuKeyboardHandler(Event event) {
-    if (menu->visible && menuButtons->interactive) {
-        if (event->key.keysym.sym == SDLK_UP) {
-            container * c = menuButtons->childs[selected > 1? selected - 2 : 2];
-            keyboard_event->user.code = Events_MouseIn;
-            keyboard_event->user.data2 = c;
-            pushCustom(c->callbacks,keyboard_event);
-        } else if (event->key.keysym.sym == SDLK_DOWN) {
-            container * c = menuButtons->childs[selected == 3 ? 0 : selected];
-            keyboard_event->user.code = Events_MouseIn;
-            keyboard_event->user.data2 = c;
-            pushCustom(c->callbacks,keyboard_event);
-        } else if (event->key.keysym.sym == SDLK_RETURN && selected) {
-            container * c = menuButtons->childs[selected-1];
-            keyboard_event->user.code = Events_Activate;
-            keyboard_event->user.data2 = c;
-            pushCustom(c->callbacks,keyboard_event);
+    if (menu->visible) {
+        if (menuButtons->interactive) {
+            if (event->key.keysym.sym == SDLK_UP) {
+                container * c = menuButtons->childs[selected > 1? selected - 2 : 2];
+                keyboard_event->user.code = Events_MouseIn;
+                keyboard_event->user.data2 = c;
+                pushCustom(c->callbacks,keyboard_event);
+            } else if (event->key.keysym.sym == SDLK_DOWN) {
+                container * c = menuButtons->childs[selected == 3 ? 0 : selected];
+                keyboard_event->user.code = Events_MouseIn;
+                keyboard_event->user.data2 = c;
+                pushCustom(c->callbacks,keyboard_event);
+            } else if (event->key.keysym.sym == SDLK_RETURN && selected) {
+                container * c = menuButtons->childs[selected-1];
+                keyboard_event->user.code = Events_Activate;
+                keyboard_event->user.data2 = c;
+                pushCustom(c->callbacks,keyboard_event);
+            }
+        } else if (event->key.keysym.sym == SDLK_RETURN) {
+            close_settings();
         }
+        
     }
 }
 
-void open_settings(Event event) {
+void open_settings() {
     menuButtons->interactive = 0;
     settingsWindow->visible = 1;
     Mix_VolumeMusic(musicVolume/4);
 }
 
-void close_settings(Event event) {
+void close_settings() {
     menuButtons->interactive = 1;
     settingsWindow->visible = 0;
     Mix_VolumeMusic(musicVolume);
@@ -321,5 +326,12 @@ void Menu_Resize() {
     move(optionsButton,optionsButton->size.x/2+25,gameHeight-quitButton->size.y*1.5-70);
     move(quitButton,quitButton->size.x/2+25,gameHeight-quitButton->size.y/2-50);
 
+    if (selected) {
+        keyboard_event->user.code = Events_MouseOut;
+        keyboard_event->user.data2 = menuButtons->childs[selected -1];
+        defaultOutCallback(keyboard_event);
+        selected = 0;
+    }
+    
     move(settingsWindow,gameWidth/2,gameHeight/2);
 }
