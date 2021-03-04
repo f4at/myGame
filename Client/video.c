@@ -34,7 +34,8 @@ void Video_Init() {
     SDL_Surface * icon = IMG_Load("assets/imgs/icon.png");
     SDL_WM_SetIcon(icon,NULL);
 
-    free(title);free(iconText);free(icon);
+    free(title);free(iconText);
+    SDL_FreeSurface(icon);
 
     Video_Flags = SDL_OPENGL;// | SDL_RESIZABLE
 
