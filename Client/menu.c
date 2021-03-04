@@ -31,6 +31,20 @@ const SDL_Color optionsTextColor = (SDL_Color){r:0,g:0,b:0};
 
 fastUint8 selected = 0;
 Event keyboard_event;
+
+
+void open_settings() {
+    menuButtons->interactive = 0;
+    settingsWindow->visible = 1;
+    Mix_VolumeMusic(musicVolume/4);
+}
+
+void close_settings() {
+    menuButtons->interactive = 1;
+    settingsWindow->visible = 0;
+    Mix_VolumeMusic(musicVolume);
+}
+
 void menuKeyboardHandler(Event event) {
     if (menu->visible) {
         if (menuButtons->interactive) {
@@ -55,18 +69,6 @@ void menuKeyboardHandler(Event event) {
         }
         
     }
-}
-
-void open_settings() {
-    menuButtons->interactive = 0;
-    settingsWindow->visible = 1;
-    Mix_VolumeMusic(musicVolume/4);
-}
-
-void close_settings() {
-    menuButtons->interactive = 1;
-    settingsWindow->visible = 0;
-    Mix_VolumeMusic(musicVolume);
 }
 
 void menuButtonsInCallback(Event event) {
